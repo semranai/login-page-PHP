@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PHP page</title>
+</head>
+
+<body>
+<?php
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+$who = $_POST['who'] ; // radio button
+
+$con = mysqli_connect("localhost","root","","login"); // server and database
+$result = "SELECT * FROM prof_users a , std_users b WHERE (a.prof_username = '$username' AND a.prof_password = '$password') OR (b.std_username = '$username' AND b.std_password = '$password') "; //sql
+$result = mysqli_query($con,$result) ;
+$row=mysqli_fetch_array($result);
+
+if(($row['prof_username'] == $username && $row['prof_password'] == $password) || ($row['std_username'] == $username && $row['std_password'] == $password)  )
+{   
+     if ( ($who == "prof") && ($row['prof_username'] == $username && $row['prof_password'] == $password)  )
+    {   echo "Login succesfull Sir... Welcome ".$row['prof_username'];   }
+	else if (($who == "std") && ($row['std_username'] == $username && $row['std_password'] == $password))
+	{   echo "Hello Kid !!! Welcome " .$row['std_username'] ; } 
+	else { echo " You have picked wrong option, go back and fix it " ;	}		
+}
+ else { echo "failed sorrrrry , go back and check ur info ";}
+ 
+?>
+</body>
+</html>
